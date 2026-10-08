@@ -1,0 +1,98 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #FAFAFA;
+  --surface: #FFFFFF;
+  --foreground: #1A0A0F;
+  --muted: #6E535C;
+  --border: #F0D5DD;
+  --primary: #800020;
+  --primary-hover: #600018;
+  --primary-tint: #FDF0F3;
+  --success: #15803D;
+  --success-tint: #F0FDF4;
+  --error: #B91C1C;
+  --error-tint: #FEF2F2;
+  --warning: #B45309;
+  --warning-tint: #FFFBEB;
+  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+.dark {
+  --background: #FAFAFA;
+  --surface: #FFFFFF;
+  --foreground: #1A0A0F;
+  --muted: #6E535C;
+  --border: #F0D5DD;
+  --primary: #800020;
+  --primary-hover: #600018;
+  --primary-tint: #FDF0F3;
+  --success: #15803D;
+  --success-tint: #F0FDF4;
+  --error: #B91C1C;
+  --error-tint: #FEF2F2;
+  --warning: #B45309;
+  --warning-tint: #FFFBEB;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  min-height: 100vh;
+  -webkit-tap-highlight-color: transparent;
+  overflow-x: hidden;
+}
+
+.font-serif-display {
+  font-family: var(--font-serif);
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 999px;
+}
+
+/* Glassmorphism & Subtle Elevation */
+.card-burgundy {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: 0 2px 10px -2px rgba(42, 18, 24, 0.04);
+  transition: all 0.2s ease-in-out;
+}
+
+.card-burgundy:hover {
+  border-color: rgba(122, 31, 61, 0.3);
+}
+
+/* Question Statement Styling */
+.question-text-display {
+  white-space: pre-line;
+  line-height: 1.65;
+  font-size: 1.05rem;
+}
+
+/* Custom Radio Badges */
+.option-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  font-weight: 600;
+  font-size: 0.875rem;
+  transition: all 0.15s ease;
+}

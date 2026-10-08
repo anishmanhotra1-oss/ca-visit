@@ -1,0 +1,28 @@
+{
+  "name": "CA-VISIT | UPSC Mistake Revision & Quiz",
+  "short_name": "CA-VISIT",
+  "description": "Personal UPSC & Current Affairs MCQ question bank, mistake revision notebook, and memory heatmap PWA.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FAFAFA",
+  "theme_color": "#800020",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/logo.png",
+      "sizes": "192x192 512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon.png",
+      "sizes": "192x192 512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon.ico",
+      "sizes": "64x64 32x32 16x16",
+      "type": "image/x-icon"
+    }
+  ]
+}
