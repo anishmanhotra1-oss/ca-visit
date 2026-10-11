@@ -41,7 +41,7 @@ export default function RootLayout({
       </head>
       <body className="flex min-h-full flex-col bg-background font-sans text-foreground antialiased selection:bg-primary-tint selection:text-primary">
         <Navigation />
-        <main className="flex-1 pb-20 md:pb-8 pt-4 px-4 sm:px-6 md:px-10 max-w-7xl mx-auto w-full">
+        <main className="flex-1 pb-20 md:pb-8 pt-3 sm:pt-4 px-3 sm:px-6 md:px-10 max-w-7xl mx-auto w-full">
           {children}
         </main>
         <Footer />

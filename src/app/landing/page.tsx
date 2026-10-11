@@ -60,36 +60,36 @@ export default function LandingPage() {
             </p>
 
             {/* CTAs WITH HIGH CONTRAST */}
-            <div className="pt-2 flex flex-wrap items-center gap-3.5">
+            <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
               <Link
                 href="/signup"
-                className="inline-flex items-center gap-2 rounded-xl bg-white hover:bg-rose-50 px-6 py-3.5 text-sm font-bold text-[#800020] transition-all shadow-lg shadow-black/10 hover:scale-105"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl bg-white hover:bg-rose-50 px-6 py-3.5 text-sm font-bold text-[#800020] transition-all shadow-lg shadow-black/10 hover:scale-105 text-center"
               >
                 Get Started Free <ArrowRight className="h-4 w-4 text-[#800020]" />
               </Link>
 
               <Link
                 href="/login"
-                className="inline-flex items-center gap-2 rounded-xl bg-white/10 hover:bg-white/20 px-5 py-3.5 text-sm font-semibold text-white border border-white/25 backdrop-blur-md transition-all shadow-xs"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl bg-white/10 hover:bg-white/20 px-5 py-3.5 text-sm font-semibold text-white border border-white/25 backdrop-blur-md transition-all shadow-xs text-center"
               >
                 Sign In to Account
               </Link>
 
               <Link
                 href="/?guest=true"
-                className="inline-flex items-center gap-1 text-xs text-amber-300 hover:text-amber-200 font-bold underline ml-1"
+                className="inline-flex items-center justify-center gap-1 text-xs text-amber-300 hover:text-amber-200 font-bold underline py-2 sm:ml-1"
               >
                 Explore Practice &rarr;
               </Link>
             </div>
 
             {/* STATS CARDS */}
-            <div className="pt-6 grid grid-cols-3 gap-3 border-t border-white/20">
+            <div className="pt-6 grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3 border-t border-white/20">
               <div className="p-3.5 rounded-2xl bg-white/10 border border-white/15 backdrop-blur-sm space-y-1">
                 <span className="block font-serif-display text-lg sm:text-xl font-bold text-white">
                   100% Free
                 </span>
-                <span className="text-[10px] sm:text-xs text-rose-100/80 block font-medium">
+                <span className="text-[11px] sm:text-xs text-rose-100/80 block font-medium">
                   No subscription needed
                 </span>
               </div>
@@ -98,7 +98,7 @@ export default function LandingPage() {
                 <span className="block font-serif-display text-lg sm:text-xl font-bold text-amber-300">
                   Offline PWA
                 </span>
-                <span className="text-[10px] sm:text-xs text-rose-100/80 block font-medium">
+                <span className="text-[11px] sm:text-xs text-rose-100/80 block font-medium">
                   Local storage backup
                 </span>
               </div>
@@ -107,7 +107,7 @@ export default function LandingPage() {
                 <span className="block font-serif-display text-lg sm:text-xl font-bold text-rose-200">
                   AI MCQ Import
                 </span>
-                <span className="text-[10px] sm:text-xs text-rose-100/80 block font-medium">
+                <span className="text-[11px] sm:text-xs text-rose-100/80 block font-medium">
                   PDF, DOCX &amp; Images
                 </span>
               </div>
@@ -337,16 +337,16 @@ export default function LandingPage() {
           Join aspirants using SAANKALP CA-VISIT to turn passive reading into active retention.
         </p>
 
-        <div className="pt-2 flex flex-wrap items-center justify-center gap-4 relative z-10">
+        <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 relative z-10 max-w-md mx-auto">
           <Link
             href="/signup"
-            className="inline-flex items-center gap-2 rounded-xl bg-white hover:bg-rose-50 px-6 py-3.5 text-xs font-bold text-[#800020] transition-all shadow-lg hover:scale-105"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl bg-white hover:bg-rose-50 px-6 py-3.5 text-xs font-bold text-[#800020] transition-all shadow-lg hover:scale-105 text-center"
           >
             Create Aspirant Account <ArrowRight className="h-4 w-4 text-[#800020]" />
           </Link>
           <Link
             href="/?guest=true"
-            className="inline-flex items-center gap-2 rounded-xl border border-white/30 bg-white/10 hover:bg-white/20 px-6 py-3.5 text-xs font-semibold text-white backdrop-blur-md transition-colors"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl border border-white/30 bg-white/10 hover:bg-white/20 px-6 py-3.5 text-xs font-semibold text-white backdrop-blur-md transition-colors text-center"
           >
             Open Practice Dashboard
           </Link>

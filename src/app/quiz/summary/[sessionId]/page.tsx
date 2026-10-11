@@ -142,18 +142,18 @@ function SessionSummaryContent() {
       )}
 
       {/* BOTTOM NAVIGATION ACTIONS */}
-      <div className="flex flex-wrap items-center justify-between gap-4 card-burgundy p-5">
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 card-burgundy p-4 sm:p-5">
         <Link
           href="/"
-          className="px-4 py-2.5 rounded-xl border border-border text-foreground text-xs font-semibold hover:bg-border/40 transition-colors"
+          className="w-full sm:w-auto px-4 py-2.5 rounded-xl border border-border text-foreground text-xs font-semibold hover:bg-border/40 transition-colors text-center"
         >
           Back to Practice Home
         </Link>
 
-        <div className="flex items-center gap-2">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full sm:w-auto">
           <Link
             href="/quiz/setup"
-            className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-primary hover:bg-primary-hover text-white text-xs font-bold transition-colors shadow-sm"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-primary hover:bg-primary-hover text-white text-xs font-bold transition-colors shadow-sm text-center"
           >
             <RefreshCw className="h-3.5 w-3.5" /> Start Another Quiz
           </Link>
@@ -161,7 +161,7 @@ function SessionSummaryContent() {
           {incorrectCount > 0 && (
             <Link
               href="/quiz/setup?mode=smart"
-              className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold transition-colors shadow-sm"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold transition-colors shadow-sm text-center"
             >
               <Zap className="h-3.5 w-3.5" /> Start Smart Revision
             </Link>

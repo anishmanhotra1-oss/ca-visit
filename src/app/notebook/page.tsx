@@ -64,18 +64,18 @@ export default function MistakesNotebookPage() {
             </p>
           </div>
 
-          <div>
+          <div className="w-full sm:w-auto">
             {mistakeQuestions.length === 0 ? (
               <button
                 disabled
-                className="px-5 py-3 rounded-xl bg-white/10 text-white/50 text-xs font-bold cursor-not-allowed border border-white/10"
+                className="w-full sm:w-auto px-5 py-3 rounded-xl bg-white/10 text-white/50 text-xs font-bold cursor-not-allowed border border-white/10 text-center"
               >
                 No active mistakes! 🎉
               </button>
             ) : (
               <Link
                 href="/quiz/setup?mode=smart"
-                className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold transition-all shadow-md hover:scale-105"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold transition-all shadow-md hover:scale-105 text-center"
               >
                 <Zap className="h-4 w-4 fill-white" />
                 Start Smart Quiz ({mistakeQuestions.length})

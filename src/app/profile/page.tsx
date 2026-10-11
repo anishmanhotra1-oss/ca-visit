@@ -305,15 +305,15 @@ export default function ProfileSettingsPage() {
               Export your entire question bank, attempt history, bookmarks, and heatmap states to a JSON file, or restore from a previous backup.
             </p>
 
-            <div className="flex flex-wrap items-center gap-3 pt-2">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3 pt-2">
               <button
                 onClick={handleExportJSON}
-                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-primary hover:bg-primary-hover text-white text-xs font-bold transition-colors shadow-sm"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-primary hover:bg-primary-hover text-white text-xs font-bold transition-colors shadow-sm text-center"
               >
                 <Download className="h-4 w-4" /> Export All My Data (JSON)
               </button>
 
-              <label className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-border bg-surface hover:bg-border/40 text-foreground text-xs font-semibold cursor-pointer transition-colors">
+              <label className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-border bg-surface hover:bg-border/40 text-foreground text-xs font-semibold cursor-pointer transition-colors text-center">
                 <Upload className="h-4 w-4" /> Restore Backup File
                 <input
                   type="file"

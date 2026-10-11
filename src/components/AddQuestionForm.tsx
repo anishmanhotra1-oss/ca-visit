@@ -337,12 +337,12 @@ export default function AddQuestionForm({
         </div>
 
         {/* ACTION BUTTONS */}
-        <div className="flex flex-wrap items-center justify-end gap-3 pt-4 border-t border-border">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-end gap-2.5 sm:gap-3 pt-4 border-t border-border">
           {!editQuestion && (
             <button
               type="button"
               onClick={(e) => handleSubmit(e, true)}
-              className="px-4 py-2.5 rounded-xl border border-primary text-primary text-xs font-semibold hover:bg-primary-tint transition-colors"
+              className="w-full sm:w-auto px-4 py-2.5 rounded-xl border border-primary text-primary text-xs font-semibold hover:bg-primary-tint transition-colors text-center"
             >
               Save & Add Another
             </button>
@@ -350,7 +350,7 @@ export default function AddQuestionForm({
 
           <button
             type="submit"
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary hover:bg-primary-hover text-white text-xs font-semibold transition-colors shadow-sm"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-primary hover:bg-primary-hover text-white text-xs font-semibold transition-colors shadow-sm text-center"
           >
             <Save className="h-4 w-4" />
             {editQuestion ? 'Update Question' : 'Save Question'}

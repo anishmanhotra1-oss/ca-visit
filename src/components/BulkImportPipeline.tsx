@@ -55,8 +55,10 @@ export default function BulkImportPipeline() {
     }
   };
 
-  const calculateTextHash = (str: string): string => {
-    return str.toLowerCase().replace(/[^a-z0-9]/g, '');
+  const calculateQuestionHash = (text: string, opts: string[] = []): string => {
+    const cleanText = text.toLowerCase().replace(/[^a-z0-9]/g, '').slice(0, 100);
+    const cleanOpts = opts.map((o) => o.toLowerCase().replace(/[^a-z0-9]/g, '').slice(0, 40)).join('::');
+    return `${cleanText}:::${cleanOpts}`;
   };
 
   const handleRunPipeline = async (e: React.FormEvent) => {
@@ -95,11 +97,11 @@ export default function BulkImportPipeline() {
       // Check against existing question bank for duplicates
       const existingBank = LocalAppStore.getQuestions();
       const existingHashes = new Set(
-        existingBank.map((q) => calculateTextHash(q.question_text))
+        existingBank.map((q) => calculateQuestionHash(q.question_text, q.options))
       );
 
-      const parsedItems: ExtractedMCQ[] = data.questions.map((q: any, idx: number) => {
-        const hash = calculateTextHash(q.question_text);
+      const parsedItems: ExtractedMCQ[] = (data.questions || []).map((q: any, idx: number) => {
+        const hash = calculateQuestionHash(q.question_text, q.options || []);
         const isDuplicate = existingHashes.has(hash);
 
         return {
@@ -206,26 +208,26 @@ ECO,Fiscal Policy,"With reference to expansionary fiscal policy, consider...",In
   return (
     <div className="space-y-6">
       {/* HEADER & TEMPLATE DOWNLOADS */}
-      <div className="card-burgundy p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="card-burgundy p-4 sm:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="font-serif-display text-xl font-bold text-foreground flex items-center gap-2">
-            <Sparkles className="h-5 w-5 text-primary" /> AI Bulk Import & Generation
+          <h2 className="font-serif-display text-lg sm:text-xl font-bold text-foreground flex items-center gap-2">
+            <Sparkles className="h-5 w-5 text-primary shrink-0" /> AI Bulk Import & Generation
           </h2>
-          <p className="text-xs text-muted">
+          <p className="text-xs text-muted mt-0.5">
             Upload PDFs, DOCX, TXT, images or paste text. Gemini AI converts them into structured MCQs.
           </p>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
           <button
             onClick={downloadCsvTemplate}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-border bg-surface text-xs font-semibold text-foreground hover:bg-border/40"
+            className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg border border-border bg-surface text-xs font-semibold text-foreground hover:bg-border/40 transition-colors"
           >
             <Download className="h-3.5 w-3.5" /> CSV Template
           </button>
           <button
             onClick={downloadJsonTemplate}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-border bg-surface text-xs font-semibold text-foreground hover:bg-border/40"
+            className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg border border-border bg-surface text-xs font-semibold text-foreground hover:bg-border/40 transition-colors"
           >
             <Download className="h-3.5 w-3.5" /> JSON Template
           </button>
@@ -359,7 +361,7 @@ ECO,Fiscal Policy,"With reference to expansionary fiscal policy, consider...",In
             <button
               type="submit"
               disabled={loading}
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-primary hover:bg-primary-hover text-white text-xs font-bold transition-colors disabled:opacity-50 shadow-sm"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-primary hover:bg-primary-hover text-white text-xs font-bold transition-colors disabled:opacity-50 shadow-sm"
             >
               {loading ? (
                 <>
@@ -378,28 +380,28 @@ ECO,Fiscal Policy,"With reference to expansionary fiscal policy, consider...",In
       {/* REVIEW & APPROVAL SCREEN */}
       {extractedList.length > 0 && (
         <div className="space-y-6">
-          <div className="card-burgundy p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-primary-tint/30 border-primary/30">
+          <div className="card-burgundy p-4 sm:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-primary-tint/30 border-primary/30">
             <div>
-              <h3 className="font-serif-display text-lg font-bold text-foreground">
+              <h3 className="font-serif-display text-base sm:text-lg font-bold text-foreground">
                 Review & Approve Questions ({extractedList.filter((i) => i.approved).length}/
                 {extractedList.length} Approved)
               </h3>
-              <p className="text-xs text-muted">
+              <p className="text-xs text-muted mt-0.5">
                 Inspect, edit topic/options, or discard questions before appending to your bank.
               </p>
             </div>
 
-            <div className="flex items-center gap-2">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full sm:w-auto">
               <button
                 onClick={() => setExtractedList([])}
-                className="px-4 py-2 rounded-xl border border-border bg-surface text-xs font-semibold text-muted hover:bg-border/40"
+                className="w-full sm:w-auto px-4 py-2 rounded-xl border border-border bg-surface text-xs font-semibold text-muted hover:bg-border/40 text-center justify-center transition-colors"
               >
                 Discard All
               </button>
               <button
                 onClick={handleAddAllApproved}
                 disabled={extractedList.filter((i) => i.approved).length === 0}
-                className="inline-flex items-center gap-1.5 px-5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-sm disabled:opacity-40"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-sm disabled:opacity-40 transition-colors"
               >
                 <Check className="h-4 w-4 stroke-[3]" /> Add Approved to Bank
               </button>

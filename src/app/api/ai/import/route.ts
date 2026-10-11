@@ -16,8 +16,8 @@ const MCQSchema = z.object({
 
 type MCQItem = z.infer<typeof MCQSchema>;
 
-// Helper: Split full document text into clean question chunks without cutting questions
-function splitDocumentIntoChunks(text: string, chunkSize = 20000): string[] {
+// Helper: Split full document text into clean question chunks with overlap to ensure no question is cut off
+function splitDocumentIntoChunks(text: string, chunkSize = 8500, overlap = 1200): string[] {
   if (text.length <= chunkSize) return [text];
 
   const chunks: string[] = [];
@@ -30,8 +30,8 @@ function splitDocumentIntoChunks(text: string, chunkSize = 20000): string[] {
       break;
     }
 
-    // Look for a question delimiter in the last 30% of the chunk
-    const searchSlice = text.slice(startIndex + Math.floor(chunkSize * 0.7), endIndex);
+    // Look for question delimiter in the last 25% of the chunk
+    const searchSlice = text.slice(startIndex + Math.floor(chunkSize * 0.75), endIndex);
 
     // Look for question patterns: \nQ.1, \n1. , \nQuestion 1, \n(1), or \n\n
     const questionMatch = searchSlice.search(
@@ -42,11 +42,11 @@ function splitDocumentIntoChunks(text: string, chunkSize = 20000): string[] {
 
     let splitOffset = -1;
     if (questionMatch !== -1) {
-      splitOffset = Math.floor(chunkSize * 0.7) + questionMatch;
+      splitOffset = Math.floor(chunkSize * 0.75) + questionMatch;
     } else if (doubleNewlineMatch !== -1) {
-      splitOffset = Math.floor(chunkSize * 0.7) + doubleNewlineMatch;
+      splitOffset = Math.floor(chunkSize * 0.75) + doubleNewlineMatch;
     } else if (newlineMatch !== -1) {
-      splitOffset = Math.floor(chunkSize * 0.7) + newlineMatch;
+      splitOffset = Math.floor(chunkSize * 0.75) + newlineMatch;
     }
 
     if (splitOffset > 0) {
@@ -54,7 +54,8 @@ function splitDocumentIntoChunks(text: string, chunkSize = 20000): string[] {
     }
 
     chunks.push(text.slice(startIndex, endIndex));
-    startIndex = endIndex;
+    // Advance with overlap so questions near the boundary are never split in half
+    startIndex = Math.max(startIndex + 1, endIndex - overlap);
   }
 
   return chunks;
@@ -130,20 +131,23 @@ async function runChunkExtraction(
   chunkIdx: number,
   totalChunks: number
 ): Promise<MCQItem[]> {
-  const prompt = `You are a senior UPSC exam expert. Extract ALL multiple-choice questions (MCQs) from this text section into a strict JSON array.
-CRITICAL INSTRUCTIONS:
-1. Extract EVERY SINGLE question present in this text without skipping, truncating, or summarizing any.
-2. For each question, extract:
-   - "topic": Topic or subject (e.g. Polity, Economy, Environment, Modern History, Science & Tech, Current Affairs).
-   - "question_text": The complete, exact question statement including any multi-statement premises ("1. Statement 1... \\n2. Statement 2...").
-   - "options": Exactly 4 options in an array: [Option A, Option B, Option C, Option D].
-   - "correct_index": 0 for A, 1 for B, 2 for C, 3 for D. If answer key/explanation is present in the text, use that exact index.
-   - "explanation": Complete detailed explanation or solution if provided in text.
-   - "tags": Relevant tags like ["UPSC", "Prelims"].
-   - "priority": 1 (Hard), 2 (Medium), or 3 (Easy). Default 2.
-3. Return ONLY a valid JSON array of objects.
+  const prompt = `You are a senior UPSC exam expert and question extractor.
+The text below contains numbered multiple-choice questions from an examination document.
 
-TEXT MATERIAL [Section ${chunkIdx + 1} of ${totalChunks}]:
+CRITICAL MANDATORY INSTRUCTIONS:
+1. Extract EVERY SINGLE question present in this text section. Expect around 4 to 10 questions.
+2. DO NOT SKIP, OMIT, SUMMARIZE, OR TRUNCATE ANY QUESTION. Every numbered question (1, 2, 3... or Q.1, Q.2... or (1), (2)...) MUST be extracted into the JSON array.
+3. For each question, extract:
+   - "topic": Topic or subject area (e.g. Indian Polity, Economy, Environment & Ecology, Modern History, Science & Technology, Current Affairs).
+   - "question_text": The complete, exact question statement including any numbered statements or premises ("1. Statement 1... \\n2. Statement 2... \\nWhich of the statements given above is/are correct?").
+   - "options": Exactly 4 options in an array: [Option A, Option B, Option C, Option D].
+   - "correct_index": 0 for A, 1 for B, 2 for C, 3 for D. If an answer key or explanation is in the document, use that exact choice; otherwise solve it accurately.
+   - "explanation": Complete detailed explanation or solution notes.
+   - "tags": Relevant tags like ["UPSC", "Prelims"].
+   - "priority": 1 (Hard/High Priority), 2 (Medium), or 3 (Easy). Default 2.
+4. Return ONLY a valid JSON array of objects.
+
+DOCUMENT SECTION [Chunk ${chunkIdx + 1} of ${totalChunks}]:
 ${chunkText}`;
 
   for (const modelName of candidateModels) {
@@ -152,16 +156,19 @@ ${chunkText}`;
         model: modelName,
         generationConfig: {
           responseMimeType: 'application/json',
+          maxOutputTokens: 8192,
+          temperature: 0.1,
         },
       });
       const result = await model.generateContent(prompt);
       const text = result.response.text();
       const mcqs = parseAndSanitizeMCQs(text);
       if (mcqs.length > 0) {
+        console.log(`[Gemini Chunk ${chunkIdx + 1}/${totalChunks}] Extracted ${mcqs.length} questions using ${modelName}`);
         return mcqs;
       }
     } catch (err: any) {
-      console.warn(`[Gemini Chunk ${chunkIdx + 1}] ${modelName} attempt failed:`, err?.message || err);
+      console.warn(`[Gemini Chunk ${chunkIdx + 1}/${totalChunks}] ${modelName} attempt failed:`, err?.message || err);
     }
   }
 
@@ -230,11 +237,11 @@ export async function POST(req: NextRequest) {
     let questions: MCQItem[] = [];
 
     if (mode === 'extract') {
-      // MULTI-CHUNK COMPLETE EXTRACTION: Do not truncate!
-      const chunks = splitDocumentIntoChunks(contentToProcess, 20000);
-      console.log(`[AI Import] Extracting all questions from ${chunks.length} chunks (${contentToProcess.length} total chars)...`);
+      // MULTI-CHUNK COMPLETE EXTRACTION: Process in 8,500-char chunks to guarantee zero question omission
+      const chunks = splitDocumentIntoChunks(contentToProcess, 8500, 1200);
+      console.log(`[AI Import] Extracting all questions across ${chunks.length} chunks (${contentToProcess.length} total chars)...`);
 
-      // Process with concurrency limit of 3
+      // Concurrency of 3 with slight inter-batch delay to stay well within Gemini API limits
       const concurrency = 3;
       const allExtracted: MCQItem[] = [];
 
@@ -247,18 +254,30 @@ export async function POST(req: NextRequest) {
         for (const res of batchResults) {
           allExtracted.push(...res);
         }
+        if (i + concurrency < chunks.length) {
+          await new Promise((resolve) => setTimeout(resolve, 300));
+        }
       }
 
-      // Deduplicate questions by normalized question text
+      console.log(`[AI Import] Total raw questions extracted before deduplication: ${allExtracted.length}`);
+
+      // Deduplicate questions by combining question text and options to prevent false collision
       const seenHashes = new Set<string>();
       for (const q of allExtracted) {
-        const hash = q.question_text.toLowerCase().replace(/[^a-z0-9]/g, '');
-        if (hash.length > 10 && seenHashes.has(hash)) {
+        const cleanText = q.question_text.toLowerCase().replace(/[^a-z0-9]/g, '').slice(0, 100);
+        const cleanOpts = (q.options || [])
+          .map((o) => o.toLowerCase().replace(/[^a-z0-9]/g, '').slice(0, 40))
+          .join('|');
+        const hash = `${cleanText}:::${cleanOpts}`;
+
+        if (hash.length > 15 && seenHashes.has(hash)) {
           continue;
         }
-        if (hash.length > 10) seenHashes.add(hash);
+        if (hash.length > 15) seenHashes.add(hash);
         questions.push(q);
       }
+
+      console.log(`[AI Import] Final extracted questions: ${questions.length}`);
 
       if (questions.length === 0) {
         throw new Error('No multiple-choice questions could be detected in the uploaded document.');

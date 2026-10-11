@@ -165,18 +165,18 @@ export default function ManageQuestions() {
 
         {/* BULK ACTIONS BAR */}
         {selectedIds.length > 0 && (
-          <div className="flex items-center justify-between gap-3 p-3 rounded-xl bg-primary-tint border border-primary/20 text-xs text-primary font-medium animate-fadeIn">
-            <span>{selectedIds.length} question(s) selected</span>
-            <div className="flex items-center gap-2">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 p-3 rounded-xl bg-primary-tint border border-primary/20 text-xs text-primary font-medium animate-fadeIn">
+            <span className="font-semibold">{selectedIds.length} question(s) selected</span>
+            <div className="flex items-center gap-2 w-full sm:w-auto">
               <button
                 onClick={() => setShowBulkMoveModal(true)}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface border border-primary/30 hover:bg-surface/80"
+                className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface border border-primary/30 hover:bg-surface/80"
               >
                 <FolderInput className="h-3.5 w-3.5" /> Move Subject
               </button>
               <button
                 onClick={handleBulkSoftDelete}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-rose-600 text-white hover:bg-rose-700"
+                className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg bg-rose-600 text-white hover:bg-rose-700"
               >
                 <Trash2 className="h-3.5 w-3.5" /> Move to Trash
               </button>

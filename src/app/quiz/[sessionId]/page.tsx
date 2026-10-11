@@ -235,15 +235,23 @@ export default function QuizExecutionPage() {
             </span>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
             {/* TIMER */}
-            <div className="flex items-center gap-1.5 text-xs font-mono font-semibold text-muted bg-border/40 px-2.5 py-1 rounded-lg">
+            <div className="flex items-center gap-1.5 text-xs font-mono font-semibold text-muted bg-border/40 px-2 sm:px-2.5 py-1 rounded-lg">
               <Clock className="h-3.5 w-3.5" />
               <span>
                 {Math.floor(elapsedSec / 60)}:
                 {String(elapsedSec % 60).padStart(2, '0')}
               </span>
             </div>
+
+            {/* QUICK SUBMIT ON MOBILE */}
+            <button
+              onClick={handleSubmitQuiz}
+              className="lg:hidden px-2.5 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-xs transition-colors"
+            >
+              Submit
+            </button>
 
             {/* EXIT BUTTON */}
             <button
@@ -396,19 +404,19 @@ export default function QuizExecutionPage() {
           </div>
 
           {/* FOOTER ACTIONS */}
-          <div className="flex flex-wrap items-center justify-between gap-3 card-burgundy p-4">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5 card-burgundy p-3.5 sm:p-4">
             <button
               disabled={currentIndex === 0}
               onClick={() => setCurrentIndex((prev) => Math.max(0, prev - 1))}
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold text-foreground border border-border hover:bg-border/40 disabled:opacity-40"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-semibold text-foreground border border-border hover:bg-border/40 disabled:opacity-40 transition-colors text-center"
             >
               <ArrowLeft className="h-4 w-4" /> Previous
             </button>
 
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 w-full sm:w-auto">
               <button
                 onClick={handleSkip}
-                className="px-4 py-2 rounded-xl text-xs font-semibold text-muted border border-border hover:bg-border/40"
+                className="flex-1 sm:flex-initial px-4 py-2.5 rounded-xl text-xs font-semibold text-muted border border-border hover:bg-border/40 text-center transition-colors"
               >
                 Skip Question
               </button>
@@ -416,7 +424,7 @@ export default function QuizExecutionPage() {
               <button
                 disabled={currentIndex === questions.length - 1}
                 onClick={() => setCurrentIndex((prev) => Math.min(questions.length - 1, prev + 1))}
-                className="inline-flex items-center gap-1.5 px-5 py-2 rounded-xl bg-primary hover:bg-primary-hover text-white text-xs font-bold transition-colors disabled:opacity-40 shadow-sm"
+                className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 px-5 py-2.5 rounded-xl bg-primary hover:bg-primary-hover text-white text-xs font-bold transition-colors disabled:opacity-40 shadow-sm text-center"
               >
                 Save & Next <ArrowRight className="h-4 w-4" />
               </button>

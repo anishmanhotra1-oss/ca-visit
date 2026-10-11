@@ -218,7 +218,7 @@ export default function MemoryHeatmapPage() {
             </p>
           </div>
 
-          <div className="flex items-center gap-3 bg-white/10 p-3 rounded-2xl border border-white/10 text-xs shrink-0">
+          <div className="flex items-center justify-around w-full sm:w-auto gap-3 bg-white/10 p-3 rounded-2xl border border-white/10 text-xs shrink-0">
             <div>
               <span className="text-emerald-300 font-bold text-lg">{strongCount}</span>
               <p className="text-[10px] text-white/70">Strong (&ge;70%)</p>

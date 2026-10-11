@@ -222,17 +222,17 @@ function QuizSetupContent() {
             })}
           </div>
 
-          <div className="flex items-center justify-between pt-4 border-t border-border">
+          <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-between gap-3 pt-4 border-t border-border">
             <button
               onClick={() => router.push('/')}
-              className="px-4 py-2.5 rounded-xl text-xs font-semibold text-muted hover:bg-border/40"
+              className="w-full sm:w-auto px-4 py-2.5 rounded-xl text-xs font-semibold text-muted hover:bg-border/40 text-center transition-colors"
             >
               Cancel
             </button>
             <button
               disabled={selectedSubjectIds.length === 0}
               onClick={() => setStep(2)}
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary hover:bg-primary-hover text-white text-xs font-semibold transition-colors disabled:opacity-40 shadow-sm"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-primary hover:bg-primary-hover text-white text-xs font-semibold transition-colors disabled:opacity-40 shadow-sm text-center"
             >
               Next: Preferences
               <ArrowRight className="h-4 w-4" />
@@ -365,10 +365,10 @@ function QuizSetupContent() {
             )}
           </div>
 
-          <div className="flex items-center justify-between pt-4 border-t border-border">
+          <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-between gap-3 pt-4 border-t border-border">
             <button
               onClick={() => setStep(1)}
-              className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-semibold text-muted hover:bg-border/40"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-semibold text-muted hover:bg-border/40 text-center transition-colors"
             >
               <ArrowLeft className="h-4 w-4" /> Previous
             </button>
@@ -376,7 +376,7 @@ function QuizSetupContent() {
             <button
               disabled={actualCount === 0}
               onClick={handleStartQuiz}
-              className={`inline-flex items-center gap-2 px-6 py-2.5 rounded-xl text-xs font-bold text-white transition-colors disabled:opacity-40 shadow-sm ${
+              className={`w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl text-xs font-bold text-white transition-colors disabled:opacity-40 shadow-sm text-center ${
                 isSmartMode
                   ? 'bg-amber-600 hover:bg-amber-700'
                   : 'bg-primary hover:bg-primary-hover'

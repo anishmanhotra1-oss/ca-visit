@@ -7,7 +7,7 @@ import Logo from './Logo';
 
 export default function Footer() {
   return (
-    <footer className="w-full border-t border-[#F0D5DD] bg-white text-[#1A0A0F] pt-12 pb-16 md:pb-12 mt-12 transition-colors">
+    <footer className="w-full border-t border-[#F0D5DD] bg-white text-[#1A0A0F] pt-10 sm:pt-12 pb-28 md:pb-12 mt-12 transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-10 space-y-10">
         {/* TOP SECTION: BRANDING & NAVIGATION COLUMNS */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 lg:gap-12">

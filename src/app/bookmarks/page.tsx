@@ -63,11 +63,11 @@ export default function BookmarksPage() {
             </p>
           </div>
 
-          <div>
+          <div className="w-full sm:w-auto">
             {bookmarkedQuestions.length > 0 && (
               <Link
                 href="/quiz/setup"
-                className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-sky-500 hover:bg-sky-600 text-white text-xs font-bold transition-all shadow-md hover:scale-105"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-sky-500 hover:bg-sky-600 text-white text-xs font-bold transition-all shadow-md hover:scale-105 text-center"
               >
                 <Play className="h-4 w-4 fill-white" />
                 Practice Bookmarks ({bookmarkedQuestions.length})
