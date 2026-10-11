@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { Question, Session, Subject, QuestionState } from '@/lib/types';
 import { LocalAppStore } from '@/lib/store';
@@ -41,6 +41,43 @@ export default function QuizExecutionPage() {
   const [showExitConfirm, setShowExitConfirm] = useState(false);
   const [paletteOpenMobile, setPaletteOpenMobile] = useState(false);
   const [elapsedSec, setElapsedSec] = useState(0);
+
+  const topRef = useRef<HTMLDivElement>(null);
+
+  const scrollToTop = useCallback(() => {
+    if (typeof window !== 'undefined') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      document.documentElement.scrollTo({ top: 0, behavior: 'smooth' });
+      document.body.scrollTo({ top: 0, behavior: 'smooth' });
+      if (topRef.current) {
+        topRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+  }, []);
+
+  // Scroll to top every time the question changes (Save & Next, Skip, Previous, Palette)
+  useEffect(() => {
+    scrollToTop();
+  }, [currentIndex, scrollToTop]);
+
+  const handleNextQuestion = useCallback(() => {
+    if (currentIndex < questions.length - 1) {
+      setCurrentIndex((prev) => prev + 1);
+      scrollToTop();
+    }
+  }, [currentIndex, questions.length, scrollToTop]);
+
+  const handlePreviousQuestion = useCallback(() => {
+    if (currentIndex > 0) {
+      setCurrentIndex((prev) => Math.max(0, prev - 1));
+      scrollToTop();
+    }
+  }, [currentIndex, scrollToTop]);
+
+  const handleJumpQuestion = useCallback((idx: number) => {
+    setCurrentIndex(idx);
+    scrollToTop();
+  }, [scrollToTop]);
 
   // Initialize active quiz from sessionStorage or store
   useEffect(() => {
@@ -126,6 +163,7 @@ export default function QuizExecutionPage() {
 
     if (currentIndex < questions.length - 1) {
       setCurrentIndex((prev) => prev + 1);
+      scrollToTop();
     }
   };
 
@@ -199,14 +237,14 @@ export default function QuizExecutionPage() {
       else if (['2', 'b'].includes(key)) handleSelectOption(1);
       else if (['3', 'c'].includes(key)) handleSelectOption(2);
       else if (['4', 'd'].includes(key)) handleSelectOption(3);
-      else if (key === 'n' && currentIndex < questions.length - 1) setCurrentIndex((prev) => prev + 1);
+      else if (key === 'n' && currentIndex < questions.length - 1) handleNextQuestion();
       else if (key === 's') handleSkip();
       else if (key === 'b') handleToggleBookmark();
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [currentIndex, questions.length, handleSkip]);
+  }, [currentIndex, questions.length, handleSkip, handleNextQuestion]);
 
   if (!currentQuestion || !session) {
     return (
@@ -220,7 +258,7 @@ export default function QuizExecutionPage() {
   const progressPercent = Math.round(((currentIndex + 1) / questions.length) * 100);
 
   return (
-    <div className="space-y-6 max-w-5xl mx-auto pb-12">
+    <div ref={topRef} className="space-y-6 max-w-5xl mx-auto pb-12">
       {/* TOP QUIZ HEADER */}
       <div className="card-burgundy p-4 sm:p-5 space-y-3">
         <div className="flex items-center justify-between gap-3">
@@ -407,7 +445,7 @@ export default function QuizExecutionPage() {
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5 card-burgundy p-3.5 sm:p-4">
             <button
               disabled={currentIndex === 0}
-              onClick={() => setCurrentIndex((prev) => Math.max(0, prev - 1))}
+              onClick={handlePreviousQuestion}
               className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-semibold text-foreground border border-border hover:bg-border/40 disabled:opacity-40 transition-colors text-center"
             >
               <ArrowLeft className="h-4 w-4" /> Previous
@@ -423,7 +461,7 @@ export default function QuizExecutionPage() {
 
               <button
                 disabled={currentIndex === questions.length - 1}
-                onClick={() => setCurrentIndex((prev) => Math.min(questions.length - 1, prev + 1))}
+                onClick={handleNextQuestion}
                 className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 px-5 py-2.5 rounded-xl bg-primary hover:bg-primary-hover text-white text-xs font-bold transition-colors disabled:opacity-40 shadow-sm text-center"
               >
                 Save & Next <ArrowRight className="h-4 w-4" />
@@ -469,7 +507,7 @@ export default function QuizExecutionPage() {
               return (
                 <button
                   key={q.id}
-                  onClick={() => setCurrentIndex(idx)}
+                  onClick={() => handleJumpQuestion(idx)}
                   className={`h-9 w-9 rounded-xl text-xs font-bold border transition-all flex items-center justify-center ${btnStyle} ${
                     isCurrent ? 'ring-2 ring-primary ring-offset-2 scale-105' : ''
                   }`}
