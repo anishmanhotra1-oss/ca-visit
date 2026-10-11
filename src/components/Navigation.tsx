@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { usePathname, useSearchParams } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import {
   BookOpen,
   PlusCircle,
@@ -20,16 +20,19 @@ import Logo from './Logo';
 
 export default function Navigation() {
   const pathname = usePathname();
-  const searchParams = useSearchParams();
   const isCloudSynced = isSupabaseConfigured();
   const [user, setUser] = useState<AuthUser | null>(null);
+  const [isGuestMode, setIsGuestMode] = useState(false);
 
   useEffect(() => {
     setUser(AuthService.getCurrentUser());
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      setIsGuestMode(params.get('guest') === 'true');
+    }
   }, [pathname]);
 
   const isLoggedIn = user && user.email !== 'aspirant@upsc-visit.local';
-  const isGuestMode = searchParams.get('guest') === 'true';
 
   // WHEN LOGGED OUT -> SHOW LANDING NAVBAR WITH LOGO, LOGIN & CREATE ACCOUNT BUTTONS
   if (!isLoggedIn && !isGuestMode) {

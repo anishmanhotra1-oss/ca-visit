@@ -14,22 +14,23 @@ import {
   CheckCircle2,
   HelpCircle,
 } from 'lucide-react';
-import { useSearchParams } from 'next/navigation';
 import { LocalAppStore } from '@/lib/store';
 import { Question, QuestionState } from '@/lib/types';
 import { AuthService, AuthUser } from '@/lib/auth';
 import LandingPage from './landing/page';
 
 export default function RootPage() {
-  const searchParams = useSearchParams();
   const [user, setUser] = useState<AuthUser | null>(null);
+  const [isGuestMode, setIsGuestMode] = useState(false);
   const [checkedAuth, setCheckedAuth] = useState(false);
-
-  const isGuestMode = searchParams.get('guest') === 'true';
 
   useEffect(() => {
     const u = AuthService.getCurrentUser();
     setUser(u);
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      setIsGuestMode(params.get('guest') === 'true');
+    }
     setCheckedAuth(true);
   }, []);
 

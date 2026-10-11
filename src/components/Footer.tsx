@@ -11,8 +11,8 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-10 space-y-10">
         {/* TOP SECTION: BRANDING & NAVIGATION COLUMNS */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 lg:gap-12">
-          {/* COLUMN 1: BRANDING & DESCRIPTION (5 cols) */}
-          <div className="md:col-span-5 space-y-4">
+          {/* COLUMN 1: BRANDING & DESCRIPTION (8 cols) */}
+          <div className="md:col-span-8 space-y-4">
             <Link href="/" className="inline-flex items-center gap-2.5 group">
               <Logo className="h-10 w-10" />
               <div>
@@ -40,8 +40,8 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* COLUMN 2: QUICK LINKS (3 cols) */}
-          <div className="md:col-span-3 space-y-3">
+          {/* COLUMN 2: QUICK LINKS (4 cols) */}
+          <div className="md:col-span-4 space-y-3">
             <h4 className="text-xs font-bold uppercase tracking-wider text-[#800020]">
               Core Modules
             </h4>
@@ -72,30 +72,6 @@ export default function Footer() {
                 </Link>
               </li>
             </ul>
-          </div>
-
-          {/* COLUMN 3: ACCOUNT & EXAM TARGETS (4 cols) */}
-          <div className="md:col-span-4 space-y-3">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-[#800020]">
-              Aspirant Account
-            </h4>
-            <p className="text-xs text-[#6E535C] leading-relaxed font-medium">
-              Create an account to personalize your target year (2025, 2026, 2027) and optional subject (PSIR, Sociology, Geography, History).
-            </p>
-            <div className="pt-1 flex flex-wrap gap-2">
-              <Link
-                href="/login"
-                className="inline-flex items-center px-3.5 py-1.5 rounded-xl border border-[#F0D5DD] bg-white hover:bg-[#FDF0F3] text-[#800020] text-xs font-bold transition-all"
-              >
-                Sign In
-              </Link>
-              <Link
-                href="/signup"
-                className="inline-flex items-center px-3.5 py-1.5 rounded-xl bg-[#800020] hover:bg-[#600018] text-white text-xs font-bold transition-all shadow-xs"
-              >
-                Create Free Account
-              </Link>
-            </div>
           </div>
         </div>
 

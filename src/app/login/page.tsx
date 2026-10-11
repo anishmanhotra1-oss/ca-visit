@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { AuthService, AuthUser } from '@/lib/auth';
 import { isSupabaseConfigured } from '@/lib/supabase';
 import {
@@ -23,12 +23,9 @@ import {
 
 import Logo from '@/components/Logo';
 
-export default function LoginPage() {
-  const router = Router();
-  const searchParams = useSearchParams();
-  const initialMode = searchParams.get('mode') === 'signup' ? 'signup' : 'login';
-
-  const [mode, setMode] = useState<'login' | 'signup'>(initialMode);
+function LoginForm() {
+  const router = useRouter();
+  const [mode, setMode] = useState<'login' | 'signup'>('login');
   const [showPassword, setShowPassword] = useState(false);
 
   // Form Fields
@@ -48,6 +45,12 @@ export default function LoginPage() {
   const isCloudSynced = isSupabaseConfigured();
 
   useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('mode') === 'signup') {
+        setMode('signup');
+      }
+    }
     const user = AuthService.getCurrentUser();
     setCurrentUser(user);
   }, []);
@@ -161,24 +164,6 @@ export default function LoginPage() {
 
         {/* AUTH CARD */}
         <div className="card-burgundy p-6 sm:p-8 space-y-6 shadow-glow">
-          {/* DATABASE MODE BADGE */}
-          <div className="flex items-center justify-between text-xs text-muted border-b border-border pb-3">
-            <div className="flex items-center gap-1.5 font-medium">
-              <Database className="h-3.5 w-3.5 text-primary" />
-              <span>
-                {isCloudSynced ? 'Supabase Cloud DB' : 'Local Aspirant Database'}
-              </span>
-            </div>
-            <span
-              className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
-                isCloudSynced
-                  ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300'
-                  : 'bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300'
-              }`}
-            >
-              {isCloudSynced ? 'Synced' : 'Offline Ready'}
-            </span>
-          </div>
 
           {/* TAB SWITCHER */}
           <div className="grid grid-cols-2 p-1 rounded-xl bg-border/40 border border-border text-xs font-semibold">
@@ -372,6 +357,10 @@ export default function LoginPage() {
   );
 }
 
-function Router() {
-  return useRouter();
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<div className="min-h-[80vh] flex items-center justify-center text-muted">Loading...</div>}>
+      <LoginForm />
+    </Suspense>
+  );
 }
