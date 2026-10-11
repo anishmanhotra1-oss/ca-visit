@@ -201,6 +201,13 @@ export class AuthService {
    * Logout user
    */
   static async logout(): Promise<void> {
+    if (typeof window !== 'undefined') {
+      try {
+        localStorage.removeItem('cav_guest_mode');
+      } catch (e) {
+        // ignore
+      }
+    }
     if (isSupabaseConfigured()) {
       try {
         await supabase.auth.signOut();

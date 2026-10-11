@@ -77,6 +77,9 @@ export default function LandingPage() {
 
               <Link
                 href="/?guest=true"
+                onClick={() => {
+                  if (typeof window !== 'undefined') localStorage.setItem('cav_guest_mode', 'true');
+                }}
                 className="inline-flex items-center justify-center gap-1 text-xs text-amber-300 hover:text-amber-200 font-bold underline py-2 sm:ml-1"
               >
                 Explore Practice &rarr;
@@ -346,6 +349,9 @@ export default function LandingPage() {
           </Link>
           <Link
             href="/?guest=true"
+            onClick={() => {
+              if (typeof window !== 'undefined') localStorage.setItem('cav_guest_mode', 'true');
+            }}
             className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl border border-white/30 bg-white/10 hover:bg-white/20 px-6 py-3.5 text-xs font-semibold text-white backdrop-blur-md transition-colors text-center"
           >
             Open Practice Dashboard

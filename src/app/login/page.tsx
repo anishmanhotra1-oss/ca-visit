@@ -346,7 +346,10 @@ function LoginForm() {
         {/* DEMO / GUEST FOOTER LINK */}
         <div className="text-center">
           <Link
-            href="/"
+            href="/?guest=true"
+            onClick={() => {
+              if (typeof window !== 'undefined') localStorage.setItem('cav_guest_mode', 'true');
+            }}
             className="text-xs text-muted hover:text-foreground font-medium underline"
           >
             Continue as Guest / Explore App Dashboard &rarr;

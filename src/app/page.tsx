@@ -29,7 +29,14 @@ export default function RootPage() {
     setUser(u);
     if (typeof window !== 'undefined') {
       const params = new URLSearchParams(window.location.search);
-      setIsGuestMode(params.get('guest') === 'true');
+      const guestParam = params.get('guest') === 'true';
+      const storedGuest = localStorage.getItem('cav_guest_mode') === 'true';
+      if (guestParam) {
+        localStorage.setItem('cav_guest_mode', 'true');
+        setIsGuestMode(true);
+      } else if (storedGuest) {
+        setIsGuestMode(true);
+      }
     }
     setCheckedAuth(true);
   }, []);
