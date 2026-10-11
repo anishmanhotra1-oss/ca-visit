@@ -14,6 +14,7 @@ import {
   Target,
 } from 'lucide-react';
 import Logo from '@/components/Logo';
+import LandingHeroVideo from '@/components/LandingHeroVideo';
 
 export default function LandingPage() {
   // Demo Sample Quiz State for Interactive Hero Component
@@ -117,74 +118,9 @@ export default function LandingPage() {
             </div>
           </div>
 
-          {/* RIGHT COLUMN: WHITE GLASS ANALYTICS SHOWCASE */}
-          <div className="lg:col-span-5 relative">
-            <div className="p-6 rounded-3xl bg-white text-[#1A0A0F] border border-[#F0D5DD] shadow-2xl space-y-5 relative overflow-hidden">
-              {/* TOP HEADER */}
-              <div className="flex items-center justify-between border-b border-[#F0D5DD] pb-3">
-                <div className="flex items-center gap-2">
-                  <div className="h-2.5 w-2.5 rounded-full bg-emerald-500 animate-ping" />
-                  <span className="text-xs font-bold uppercase tracking-wider text-emerald-700">
-                    Live Aspirant Analytics
-                  </span>
-                </div>
-                <span className="px-2.5 py-0.5 rounded-full bg-[#FDF0F3] border border-[#F0D5DD] text-[10px] font-bold text-[#800020]">
-                  Target 2026
-                </span>
-              </div>
-
-              {/* RETENTION HEATMAP MINI PREVIEW */}
-              <div className="space-y-3">
-                <div className="flex items-center justify-between text-xs">
-                  <span className="font-bold text-[#800020]">Topic Retention Heatmap</span>
-                  <span className="text-[11px] text-emerald-700 font-bold">84% Accuracy</span>
-                </div>
-
-                <div className="space-y-2 text-xs">
-                  <div className="p-2.5 rounded-xl bg-emerald-50/80 border border-emerald-200 flex items-center justify-between">
-                    <span className="font-semibold text-emerald-950">Indian Polity &amp; Govt</span>
-                    <span className="px-2 py-0.5 rounded-md bg-emerald-600 text-white font-bold text-[10px]">
-                      88% Strong
-                    </span>
-                  </div>
-
-                  <div className="p-2.5 rounded-xl bg-amber-50/80 border border-amber-200 flex items-center justify-between">
-                    <span className="font-semibold text-amber-950">Indian Economy &amp; Banking</span>
-                    <span className="px-2 py-0.5 rounded-md bg-amber-600 text-white font-bold text-[10px]">
-                      74% Average
-                    </span>
-                  </div>
-
-                  <div className="p-2.5 rounded-xl bg-rose-50/80 border border-rose-200 flex items-center justify-between">
-                    <span className="font-semibold text-rose-950">Environment &amp; Bio</span>
-                    <span className="px-2 py-0.5 rounded-md bg-rose-600 text-white font-bold text-[10px]">
-                      42% Weak &bull; Target
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              {/* AI IMPORT TOAST */}
-              <div className="p-3 rounded-2xl bg-[#FDF0F3] border border-[#F0D5DD] space-y-1 text-xs">
-                <div className="flex items-center justify-between text-[#800020] font-bold text-[11px]">
-                  <span className="flex items-center gap-1.5">
-                    <Upload className="h-3.5 w-3.5" /> AI Auto-Extraction
-                  </span>
-                  <span className="text-emerald-700 font-bold">Completed</span>
-                </div>
-                <p className="text-[11px] text-[#6E535C] font-medium truncate">
-                  Vision_IAS_Sept2025.pdf &rarr; 35 Structured MCQs generated
-                </p>
-              </div>
-
-              {/* REVISION STREAK */}
-              <div className="flex items-center justify-between pt-1 text-xs border-t border-[#F0D5DD]">
-                <span className="flex items-center gap-1.5 text-amber-700 font-bold">
-                  🔥 14-Day Revision Streak
-                </span>
-                <span className="text-[10px] text-[#6E535C] font-medium">UPSC Prelims Countdown</span>
-              </div>
-            </div>
+          {/* RIGHT COLUMN: HERO VIDEO SHOWCASE */}
+          <div className="lg:col-span-5 relative w-full flex items-center justify-center">
+            <LandingHeroVideo defaultSrc="/landing-video.mp4" />
           </div>
         </div>
       </section>
